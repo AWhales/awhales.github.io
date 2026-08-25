@@ -5,13 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Day of the Planet of the Night</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="sky" aria-hidden="true">
-    <div class="cloud-track">
-      <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
-      <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+  <header class="topbar">
+    <nav aria-label="Site">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="notes.html">Notes</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="hero" id="hero">
+    <div class="sky" aria-hidden="true">
+      <div class="cloud-layer">
+        <div class="cloud-scaler">
+          <div class="cloud-track">
+            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+          </div>
+        </div>
+      </div>
+
+      <div class="cloud-layer cloud-layer--offset">
+        <div class="cloud-scaler">
+          <div class="cloud-track">
+            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+          </div>
+        </div>
+      </div>
     </div>
+
+    <a class="title-link" href="#content" aria-label="Day of the Planet of the Night — enter">
+      <img
+        class="title"
+        src="assets/title.png"
+        alt=""
+        width="160"
+        height="135"
+        draggable="false"
+      >
+    </a>
   </div>
+
+  <div class="runway" id="runway"></div>
+
+  <section class="content" id="content">
+    <div class="content-inner">
+      <p class="placeholder">[Status line — in development, not announced, not finished.]</p>
+      <p class="placeholder">[Tagline — one signed-off sentence. Full title. No acronym.]</p>
+      <p class="placeholder">[Public pitch — safe story beat. Night town, basement, no spoilers on homepage.]</p>
+
+      <hr>
+
+      <h2 class="placeholder">[Section — dev log / about / links]</h2>
+      <p class="placeholder">[Body copy. Short sentences. Plain spoken. See Handover.md locally.]</p>
+      <p class="placeholder">[More blocks as needed — posts, screenshots at integer scale, etc.]</p>
+    </div>
+  </section>
+
+  <script>
+    const root = document.documentElement;
+    const hero = document.getElementById('hero');
+    const runway = document.getElementById('runway');
+    let ticking = false;
+
+    function coverProgress() {
+      const distance = runway.offsetHeight;
+      if (distance <= 0) return 0;
+      return Math.min(1, Math.max(0, window.scrollY / distance));
+    }
+
+    function updateScroll() {
+      const t = coverProgress();
+      const cloudTravel = Math.round(window.innerHeight * 0.42);
+      const titleTravel = Math.round(window.innerHeight * 0.1);
+
+      root.style.setProperty('--sky-y', `${Math.round(-t * cloudTravel)}px`);
+      root.style.setProperty('--title-y', `${Math.round(-t * titleTravel)}px`);
+      hero.hidden = t >= 1;
+
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateScroll);
+      }
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      root.style.setProperty('--sky-y', '0px');
+      root.style.setProperty('--title-y', '0px');
+      hero.hidden = false;
+    } else {
+      updateScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+    }
+
+    document.querySelector('.title-link')?.addEventListener('click', (event) => {
+      event.preventDefault();
+      document.getElementById('content')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
