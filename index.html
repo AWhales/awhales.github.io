@@ -3,83 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AWhales — personal site">
-  <title>AWhales</title>
+  <meta name="description" content="Day of the Planet of the Night — a tiny mystic RPG. In development.">
+  <title>Day of the Planet of the Night</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="grain"></div>
-
   <header class="site-header">
-    <a href="/" class="logo">AWhales</a>
+    <a href="/" class="logo">Day of the Planet of the Night</a>
     <nav>
-      <a href="#work">Work</a>
+      <a href="#log">Log</a>
       <a href="#about">About</a>
-      <a href="https://github.com/AWhales" target="_blank" rel="noopener">GitHub</a>
     </nav>
   </header>
 
   <main>
     <section class="hero">
-      <p class="eyebrow">Personal site</p>
-      <h1>Building things on the web.</h1>
-      <p class="lead">
-        Welcome — this is my corner of the internet. Projects, experiments,
-        and whatever I'm working on next.
-      </p>
-      <div class="hero-actions">
-        <a class="btn primary" href="#work">See work</a>
-        <a class="btn ghost" href="mailto:hello@example.com">Say hi</a>
+      <div class="title-card" aria-hidden="true">
+        <div class="title-card-inner">
+          <span class="title-card-label">160×135</span>
+          <p class="title-card-text">title splash<br>coming from game</p>
+        </div>
       </div>
+
+      <p class="status">In development · not announced · not finished</p>
+
+      <p class="tagline">
+        Day of the Planet of the Night is a tiny mystic RPG about a night that will not stay ordinary.
+      </p>
+
+      <p class="pitch">
+        You have just moved in with Uncle Frank. It is night. The house shakes. There are flashing lights at the town hall. Police will not let anyone through. The neighbour Julia is peculiar and tired. There are rats in the bins. You and a handful of other kids end up in a locked municipal basement: steam, combination locks, holes in the floor, something moving out there.
+      </p>
     </section>
 
-    <section id="work" class="section">
+    <section id="log" class="section">
       <div class="section-head">
-        <h2>Work</h2>
-        <p>Stuff I've shipped or am tinkering with.</p>
+        <h2>Dev log</h2>
+        <p>Process notes. No release dates. No platforms.</p>
       </div>
-      <ul class="card-grid">
-        <li class="card">
-          <span class="card-tag">Project</span>
-          <h3>Your first project</h3>
-          <p>Swap this out with something you've built — a repo, app, or experiment.</p>
-          <a href="https://github.com/AWhales" target="_blank" rel="noopener">View on GitHub →</a>
-        </li>
-        <li class="card">
-          <span class="card-tag">Coming soon</span>
-          <h3>Another thing</h3>
-          <p>Add more cards here as you publish projects. Duplicate the block in index.html.</p>
-          <a href="#">Link coming soon</a>
+
+      <ul class="post-list">
+        <li class="post">
+          <time datetime="2026-08-25">25 Aug 2026</time>
+          <h3>Site exists now</h3>
+          <p>
+            This is the blog shell. Screenshots will be in-game captures at integer scale — 2×, 4×, 6× — palette intact, no smoothing. The ordinary object that is wrong: a note that says the new door code is 2323, and please throw this note out.
+          </p>
         </li>
       </ul>
     </section>
 
-    <section id="about" class="section about">
+    <section id="about" class="section">
       <div class="section-head">
-        <h2>About</h2>
+        <h2>What it is</h2>
       </div>
+
       <div class="about-grid">
-        <p>
-          Edit this section with a short bio — what you do, what you're into,
-          where you're based. Keep it human.
-        </p>
-        <ul class="link-list">
-          <li><a href="https://github.com/AWhales" target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href="mailto:hello@example.com">Email</a></li>
-        </ul>
+        <div>
+          <p>
+            A tiny-pixel top-down RPG. Walk a night-time town and its rotting civic guts. Talk to people. Push crates. Crack combination locks. Trail a party of kids. Drop into turn-based mystic combat with timed hits.
+          </p>
+          <p>
+            Not swords-and-orcs. Not cozy. Not horror jump-scares. A girl, a night town, a locked basement full of steam and rats, and a cosmos that asks your star sign.
+          </p>
+        </div>
+
+        <dl class="facts">
+          <div>
+            <dt>Canvas</dt>
+            <dd>160×135 · 16×16 sprites · pixel-perfect</dd>
+          </div>
+          <div>
+            <dt>Combat</dt>
+            <dd>Turn-based · timed hits · Vibe stat</dd>
+          </div>
+          <div>
+            <dt>Moves</dt>
+            <dd>Mind / Body / Soul — not fire/water/grass</dd>
+          </div>
+          <div>
+            <dt>Made with</dt>
+            <dd>GameMaker</dd>
+          </div>
+        </dl>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>© <span id="year"></span> AWhales</p>
+    <p>© <span id="year"></span> awhales</p>
   </footer>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().FullYear();
   </script>
 </body>
 </html>
