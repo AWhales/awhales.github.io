@@ -1,0 +1,9 @@
+# Private dev stuff — lives in day-of-planet-night-dev repo
+Docs/
+Game Assets/
+Game Assetts/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
