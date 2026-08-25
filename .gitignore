@@ -1,7 +1,11 @@
-# Private dev stuff — lives in day-of-planet-night-dev repo
-Docs/
-Game Assets/
-Game Assetts/
+# Only production/ (and repo meta below) goes to git.
+# Everything else stays local — Docs/, Game Assets/, WIP, etc.
+
+/*
+!/.gitignore
+!/.github/
+!/production/
+!/README.md
 
 # OS / editor noise
 .DS_Store
