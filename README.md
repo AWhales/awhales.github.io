@@ -3,4 +3,4 @@ Public site source lives in `production/`. Edit there, commit, push — GitHub A
 
 Everything else in this folder (Docs, Game Assets, etc.) stays local and is gitignored.
 
-**One-time setup:** Repo → Settings → Pages → Source → **GitHub Actions**.
+**Pages setup:** Settings → Pages → Source → **GitHub Actions**. Then Actions → **Deploy site** → green run required after each source change.
