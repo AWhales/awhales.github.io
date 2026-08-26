@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Day of the Planet of the Night</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,42 +18,44 @@
     </nav>
   </header>
 
-  <div class="hero" id="hero">
-    <div class="sky" aria-hidden="true">
-      <div class="cloud-layer">
-        <div class="cloud-scaler">
-          <div class="cloud-track">
-            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
-            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
-            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+  <section class="scroll-scene" id="scrollScene">
+    <div class="hero-pin">
+      <div class="hero" id="hero">
+        <div class="sky" id="sky" aria-hidden="true">
+          <div class="cloud-layer">
+            <div class="cloud-scaler">
+              <div class="cloud-track">
+                <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+                <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+                <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div class="cloud-layer cloud-layer--offset">
-        <div class="cloud-scaler">
-          <div class="cloud-track">
-            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
-            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
-            <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+          <div class="cloud-layer cloud-layer--offset">
+            <div class="cloud-scaler">
+              <div class="cloud-track">
+                <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+                <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+                <img src="assets/parralax_clouds.png" alt="" width="386" height="127" draggable="false">
+              </div>
+            </div>
           </div>
         </div>
+
+        <a class="title-link" id="titleLink" href="#content" aria-label="Day of the Planet of the Night — enter">
+          <img
+            class="title"
+            src="assets/title.png"
+            alt=""
+            width="160"
+            height="135"
+            draggable="false"
+          >
+        </a>
       </div>
     </div>
-
-    <a class="title-link" href="#content" aria-label="Day of the Planet of the Night — enter">
-      <img
-        class="title"
-        src="assets/title.png"
-        alt=""
-        width="160"
-        height="135"
-        draggable="false"
-      >
-    </a>
-  </div>
-
-  <div class="runway" id="runway"></div>
+  </section>
 
   <section class="content" id="content">
     <div class="content-inner">
@@ -70,25 +72,39 @@
   </section>
 
   <script>
-    const root = document.documentElement;
-    const hero = document.getElementById('hero');
-    const runway = document.getElementById('runway');
+    const content = document.getElementById('content');
+    const sky = document.getElementById('sky');
+    const titleLink = document.getElementById('titleLink');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
     let ticking = false;
+    let titleHover = false;
 
     function coverProgress() {
-      const distance = runway.offsetHeight;
-      if (distance <= 0) return 0;
-      return Math.min(1, Math.max(0, window.scrollY / distance));
+      const vh = window.innerHeight;
+      const contentTop = content.getBoundingClientRect().top;
+      if (contentTop >= vh) return 0;
+      if (contentTop <= 0) return 1;
+      return 1 - contentTop / vh;
+    }
+
+    function baseScale() {
+      return isCoarsePointer ? 2 : 3;
     }
 
     function updateScroll() {
       const t = coverProgress();
-      const cloudTravel = Math.round(window.innerHeight * 0.42);
-      const titleTravel = Math.round(window.innerHeight * 0.1);
+      const scale = baseScale();
+      const cloudRate = isCoarsePointer ? 0.18 : 0.28;
+      const titleRate = isCoarsePointer ? 0.05 : 0.08;
+      const cloudTravel = Math.round(window.innerHeight * cloudRate);
+      const titleTravel = Math.round(window.innerHeight * titleRate);
+      const cloudY = Math.round(-t * cloudTravel);
+      const titleY = Math.round(-t * titleTravel);
+      const hoverScale = titleHover ? 1.06 : 1;
 
-      root.style.setProperty('--sky-y', `${Math.round(-t * cloudTravel)}px`);
-      root.style.setProperty('--title-y', `${Math.round(-t * titleTravel)}px`);
-      hero.hidden = t >= 1;
+      sky.style.transform = `translate3d(0, ${cloudY}px, 0)`;
+      titleLink.style.transform = `scale(${(scale * hoverScale).toFixed(3)}) translate3d(0, ${titleY}px, 0)`;
 
       ticking = false;
     }
@@ -100,17 +116,24 @@
       }
     }
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      root.style.setProperty('--sky-y', '0px');
-      root.style.setProperty('--title-y', '0px');
-      hero.hidden = false;
+    function setTitleHover(active) {
+      titleHover = active;
+      onScroll();
+    }
+
+    if (prefersReducedMotion) {
+      sky.style.transform = '';
+      titleLink.style.transform = `scale(${baseScale()})`;
     } else {
       updateScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
     }
 
-    document.querySelector('.title-link')?.addEventListener('click', (event) => {
+    titleLink.addEventListener('mouseenter', () => setTitleHover(true));
+    titleLink.addEventListener('mouseleave', () => setTitleHover(false));
+
+    titleLink.addEventListener('click', (event) => {
       event.preventDefault();
       document.getElementById('content')?.scrollIntoView({ behavior: 'smooth' });
     });

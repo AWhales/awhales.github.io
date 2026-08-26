@@ -14,8 +14,6 @@
   --title-w: 160;
   --title-h: 135;
   --scale: 3;
-  --sky-y: 0px;
-  --title-y: 0px;
   --font-pixel: "Silkscreen", monospace;
   --font-body: "IBM Plex Sans", system-ui, sans-serif;
 }
@@ -40,6 +38,7 @@ body {
   right: 0;
   z-index: 10;
   padding: 0.85rem 1.25rem;
+  padding-top: max(0.85rem, env(safe-area-inset-top));
   background: transparent;
   pointer-events: none;
 }
@@ -102,26 +101,37 @@ body {
   margin: 2rem 0;
 }
 
+.scroll-scene {
+  height: 175dvh;
+  height: 175vh;
+}
+
+.hero-pin {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--blacker);
+}
+
 .hero {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: grid;
   place-items: center;
   overflow: hidden;
   pointer-events: none;
-}
-
-.hero[hidden] {
-  display: none;
+  background: var(--blacker);
 }
 
 .sky {
   position: absolute;
   inset: 0;
   z-index: 0;
-  transform: translate3d(0, var(--sky-y), 0);
-  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .cloud-layer {
@@ -144,8 +154,6 @@ body {
 .cloud-track {
   display: flex;
   width: max-content;
-  will-change: transform;
-  animation: cloud-scroll 28s linear infinite;
 }
 
 .cloud-track img {
@@ -163,21 +171,12 @@ body {
   display: block;
   width: calc(var(--title-w) * 1px);
   height: calc(var(--title-h) * 1px);
-  transform: scale(var(--scale)) translate3d(0, var(--title-y), 0);
+  transform: scale(var(--scale)) translate3d(0, 0, 0);
   transform-origin: center center;
-  transition: transform 0.2s ease-out;
   cursor: pointer;
   pointer-events: auto;
   -webkit-tap-highlight-color: transparent;
-}
-
-.title-link:hover {
-  transform: scale(calc(var(--scale) * 1.06)) translate3d(0, var(--title-y), 0);
-}
-
-.title-link:active {
-  transform: scale(calc(var(--scale) * 0.97)) translate3d(0, var(--title-y), 0);
-  transition-duration: 0.08s;
+  backface-visibility: hidden;
 }
 
 .title-link:focus-visible {
@@ -194,16 +193,14 @@ body {
   pointer-events: none;
 }
 
-.runway {
-  height: 100vh;
-  pointer-events: none;
-}
-
 .content {
   position: relative;
   z-index: 2;
+  margin-top: -75dvh;
+  margin-top: -75vh;
   background: var(--blacker);
   border-top: 2px solid var(--grey-blue);
+  min-height: 100dvh;
   min-height: 100vh;
 }
 
@@ -236,33 +233,146 @@ body {
   line-height: 1.65;
 }
 
-@keyframes cloud-scroll {
-  from {
-    transform: translate3d(0, 0, 0);
+.page-intro {
+  color: var(--light-blue);
+  margin: -1rem 0 2rem;
+  line-height: 1.65;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-card + .post-card {
+  margin-top: 0.75rem;
+}
+
+.post-card a {
+  display: block;
+  padding: 1.25rem 0;
+  border-top: 2px solid var(--grey-blue);
+  color: inherit;
+  text-decoration: none;
+}
+
+.post-card a:hover .post-card-title {
+  color: var(--white);
+}
+
+.post-card time {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--light-blue);
+  margin-bottom: 0.35rem;
+}
+
+.post-card-title {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 0.35rem;
+}
+
+.post-card-tease {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--light-blue);
+  line-height: 1.55;
+}
+
+.post-meta {
+  font-size: 0.75rem;
+  color: var(--light-blue);
+  margin: 0 0 1.5rem;
+}
+
+.post-back {
+  color: var(--light-blue);
+  text-decoration: none;
+}
+
+.post-back:hover {
+  color: var(--white);
+}
+
+.post-title {
+  font-family: var(--font-pixel);
+  font-size: clamp(0.75rem, 2.5vw, 0.95rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--white);
+  margin: 0 0 2rem;
+}
+
+.post-body p {
+  margin: 0 0 1.25rem;
+  line-height: 1.7;
+  color: var(--white);
+}
+
+.post-body p:last-child {
+  margin-bottom: 0;
+}
+
+.post-figure {
+  margin: 2rem 0;
+}
+
+.post-figure img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  border: 2px solid var(--grey-blue);
+  background: var(--black);
+}
+
+.post-figure figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.8rem;
+  color: var(--light-blue);
+  font-style: italic;
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+  :root {
+    --scale: 2;
   }
 
-  to {
-    transform: translate3d(calc(var(--cloud-w) * -1px), 0, 0);
+  .scroll-scene {
+    height: 150dvh;
+    height: 150vh;
+  }
+
+  .content {
+    margin-top: -50dvh;
+    margin-top: -50vh;
+  }
+
+  .cloud-layer--offset {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .runway {
-    height: 0;
+  .scroll-scene {
+    height: 100dvh;
+    height: 100vh;
   }
 
-  .cloud-track {
-    animation: none;
+  .content {
+    margin-top: 0;
   }
 
   .sky,
   .title-link {
     transform: none;
-  }
-
-  .title-link:hover,
-  .title-link:focus-visible,
-  .title-link:active {
-    transform: scale(var(--scale)) translate3d(0, var(--title-y), 0);
   }
 }
