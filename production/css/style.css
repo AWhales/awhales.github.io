@@ -106,6 +106,21 @@ body {
   height: 175vh;
 }
 
+.splash-page {
+  overflow: hidden;
+  height: 100dvh;
+  height: 100vh;
+}
+
+.splash {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--blacker);
+}
+
 .hero-pin {
   position: sticky;
   top: 0;
@@ -154,6 +169,7 @@ body {
 .cloud-track {
   display: flex;
   width: max-content;
+  animation: cloud-scroll 28s linear infinite;
 }
 
 .cloud-track img {
@@ -182,6 +198,18 @@ body {
 .title-link:focus-visible {
   outline: 2px solid var(--light-blue);
   outline-offset: 6px;
+}
+
+.splash .title-link {
+  transition: transform 0.2s ease-out;
+}
+
+.splash .title-link:hover {
+  transform: scale(calc(var(--scale) * 1.06));
+}
+
+.splash .title-link:active {
+  transform: scale(calc(var(--scale) * 0.97));
 }
 
 .title {
@@ -341,6 +369,16 @@ body {
   font-style: italic;
 }
 
+@keyframes cloud-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(calc(var(--cloud-w) * -1px), 0, 0);
+  }
+}
+
 @media (max-width: 768px), (pointer: coarse) {
   :root {
     --scale: 2;
@@ -369,6 +407,11 @@ body {
 
   .content {
     margin-top: 0;
+  }
+
+  .cloud-track,
+  .splash .cloud-track {
+    animation: none;
   }
 
   .sky,
