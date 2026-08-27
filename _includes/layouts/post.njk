@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} — Day of the Planet of the Night</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
+</head>
+<body class="page">
+  <header class="topbar">
+    <nav aria-label="Site">
+      <a href="../index.html">Home</a>
+      <a href="../notes.html" aria-current="page">Notes</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <article class="page-main post">
+    <p class="post-meta"><a class="post-back" href="../notes.html">Notes</a> · {{ date | readableDate }}</p>
+    <h1 class="post-title">{{ title }}</h1>
+    <div class="post-body">{{ content | safe }}</div>
+  </article>
+</body>
+</html>

@@ -1,3 +1,6 @@
+---
+permalink: notes.html
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,13 +26,15 @@
     <p class="page-intro">Occasional writing about the game — process, pictures, things that went wrong.</p>
 
     <ul class="post-list">
+      {%- for post in collections.posts -%}
       <li class="post-card">
-        <a href="notes/shaders-are-hard.html">
-          <time datetime="2026-08-26">26 Aug 2026</time>
-          <span class="post-card-title">Shaders are hard</span>
-          <span class="post-card-tease">Puddle reflections, shader grass, and the FPS I shouldn't have ignored.</span>
+        <a href="{{ post.url }}">
+          <time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate }}</time>
+          <span class="post-card-title">{{ post.data.title }}</span>
+          <span class="post-card-tease">{{ post.data.tease }}</span>
         </a>
       </li>
+      {%- endfor -%}
     </ul>
   </main>
 </body>

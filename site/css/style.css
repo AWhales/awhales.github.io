@@ -347,6 +347,18 @@ body {
   margin-bottom: 0;
 }
 
+.post-body img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  border: 2px solid var(--grey-blue);
+  background: var(--black);
+}
+
 .post-figure {
   margin: 2rem 0;
 }
