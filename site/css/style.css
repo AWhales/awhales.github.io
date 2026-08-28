@@ -356,7 +356,59 @@ body {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   border: 2px solid var(--grey-blue);
-  background: var(--black);
+  background: var(--blacker);
+}
+
+.post-gif {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2rem 0;
+  padding: 0;
+  border: 2px solid var(--grey-blue);
+  background: var(--blacker);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.post-gif:focus-visible {
+  outline: 2px solid var(--light-blue);
+  outline-offset: 4px;
+}
+
+.post-gif img,
+.post-gif canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border: 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.post-gif-badge {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--blacker);
+  border: 2px solid var(--grey-blue);
+  padding: 0.25rem 0.4rem;
+  pointer-events: none;
+}
+
+.post-gif:not(.is-paused) .post-gif-badge {
+  opacity: 0;
+}
+
+.post-gif:not(.is-paused):hover .post-gif-badge,
+.post-gif:not(.is-paused):focus-visible .post-gif-badge {
+  opacity: 1;
 }
 
 .post-figure {

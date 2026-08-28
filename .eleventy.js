@@ -4,6 +4,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.ignores.add("posts/_TEMPLATE.md");
 
   eleventyConfig.addPassthroughCopy({ "site/css": "css" });
+  eleventyConfig.addPassthroughCopy({ "site/js": "js" });
   eleventyConfig.addPassthroughCopy({ "site/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "site/index.html": "index.html" });
   eleventyConfig.addPassthroughCopy({ "site/contact.html": "contact.html" });

@@ -12,7 +12,7 @@ I have a few shaders in my game, almost all of them in the combat stage for a va
 
 ![Puddle reflection](/assets/notes/puddle.gif)
 
-The grass tiles in my map react as you walk over them, and it took me a while to get the sprite work right with the limited palette I'm working with — but when you have huge clusters of them on the screen they start to look very regular which always bothered me. So I got to work trying to create a version of them entirely with shaders, which took much longer than I'd like to admit.
+The grass tiles in my map react as you walk over them, and it took me a while to get the sprite to feel right with the limited palette I'm working with — but when you have huge clusters of them on the screen they start to look very regular which always bothered me. So I got to work trying to create a version of them entirely with shaders, which took much longer than I'd like to admit.
 
 From that point on it became much easier to dial in a slightly random arrangement of grass for each tile, I added percentage chance of different types of plants, flowers and accent colours. I'm very pleased with how they turned out. The bit I love the most is the way the player moves through them, depending on the direction you walk on them they displace in a different way, which is quite subtle but I think adds a lot of depth to them.
 
