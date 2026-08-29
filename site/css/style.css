@@ -259,12 +259,7 @@ body {
 }
 
 .cloud-layer--offset .cloud-scaler {
-  margin-left: calc(var(--cloud-w) * -0.5px);
-}
-
-.cloud-scaler {
-  transform: scale(var(--title-scale));
-  transform-origin: center center;
+  margin-left: calc(var(--cloud-w) * var(--title-scale) * -0.5px);
 }
 
 .cloud-track {
@@ -273,11 +268,16 @@ body {
   animation: cloud-scroll 56s linear infinite;
 }
 
+/*
+ * Sized up in real pixels rather than transform: scale() — Safari rasterises a
+ * transformed layer at its layout size and smooths it when compositing, which
+ * throws away image-rendering and blurs the pixel art.
+ */
 .cloud-track img {
   display: block;
   flex: none;
-  width: calc(var(--cloud-w) * 1px);
-  height: calc(var(--cloud-h) * 1px);
+  width: calc(var(--cloud-w) * var(--title-scale) * 1px);
+  height: calc(var(--cloud-h) * var(--title-scale) * 1px);
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -821,7 +821,7 @@ body {
   }
 
   to {
-    transform: translate3d(calc(var(--cloud-w) * -1px), 0, 0);
+    transform: translate3d(calc(var(--cloud-w) * var(--title-scale) * -1px), 0, 0);
   }
 }
 
