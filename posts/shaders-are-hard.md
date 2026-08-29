@@ -2,6 +2,7 @@
 title: Shaders are hard
 tease: Puddle reflections, shader grass, and the FPS I shouldn't have ignored.
 date: 2026-08-26
+preview: /assets/notes/grass.gif
 layout: layouts/post.njk
 permalink: notes/shaders-are-hard.html
 ---

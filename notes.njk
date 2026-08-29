@@ -27,8 +27,12 @@ permalink: notes.html
 
     <ul class="post-list">
       {%- for post in collections.posts -%}
+      {%- set preview = post.data.preview or (post.templateContent | firstImage) -%}
       <li class="post-card">
         <a href="{{ post.url }}">
+          {%- if preview %}
+          <img class="post-card-preview" src="{{ preview | stillSrc }}" alt="">
+          {%- endif %}
           <time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate }}</time>
           <span class="post-card-title">{{ post.data.title }}</span>
           <span class="post-card-tease">{{ post.data.tease }}</span>

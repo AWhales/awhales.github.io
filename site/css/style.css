@@ -11,9 +11,18 @@
   --white: #9c9cba;
   --cloud-w: 386;
   --cloud-h: 127;
-  --title-w: 160;
-  --title-h: 135;
-  --scale: 3;
+  --cloud-crop: 28;
+  --title-w: 149;
+  --title-h: 21;
+  --scale: clamp(
+    2,
+    round(min(100vw / (var(--cloud-w) * 1px), 52dvh / (var(--cloud-h) * 1px))),
+    6
+  );
+  --title-scale: min(
+    calc(var(--scale) * 2),
+    round(92vw / (var(--title-w) * 1px))
+  );
   --font-pixel: "Silkscreen", monospace;
   --font-body: "IBM Plex Sans", system-ui, sans-serif;
 }
@@ -155,6 +164,12 @@ body {
   display: grid;
   place-items: center;
   overflow: hidden;
+  /* Pull the centered strip up so a little of it clips past the top. */
+  transform: translate3d(
+    0,
+    calc((100dvh - (var(--cloud-h) * var(--scale) * 1px)) / -2 - (var(--cloud-crop) * 1px)),
+    0
+  );
 }
 
 .cloud-layer--offset .cloud-scaler {
@@ -185,9 +200,9 @@ body {
   position: relative;
   z-index: 1;
   display: block;
-  width: calc(var(--title-w) * 1px);
-  height: calc(var(--title-h) * 1px);
-  transform: scale(var(--scale)) translate3d(0, 0, 0);
+  width: calc(var(--title-w) * var(--title-scale) * 1px);
+  height: calc(var(--title-h) * var(--title-scale) * 1px);
+  transform: translate3d(0, 0, 0);
   transform-origin: center center;
   cursor: pointer;
   pointer-events: auto;
@@ -205,11 +220,11 @@ body {
 }
 
 .splash .title-link:hover {
-  transform: scale(calc(var(--scale) * 1.06));
+  transform: scale(1.06);
 }
 
 .splash .title-link:active {
-  transform: scale(calc(var(--scale) * 0.97));
+  transform: scale(0.97);
 }
 
 .title {
@@ -278,15 +293,50 @@ body {
 }
 
 .post-card a {
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 11rem) 1fr;
+  column-gap: 1.1rem;
+  row-gap: 0.3rem;
+  align-items: start;
   padding: 1.25rem 0;
   border-top: 2px solid var(--grey-blue);
   color: inherit;
   text-decoration: none;
 }
 
+.post-card-preview {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  border: 2px solid var(--grey-blue);
+  background: var(--blacker);
+}
+
 .post-card a:hover .post-card-title {
   color: var(--white);
+}
+
+.post-card a:hover .post-card-preview {
+  border-color: var(--light-blue);
+}
+
+@media (max-width: 520px) {
+  .post-card a {
+    grid-template-columns: 1fr;
+  }
+
+  .post-card-preview {
+    grid-row: auto;
+    max-height: 10rem;
+    width: auto;
+    max-width: 100%;
+    margin-bottom: 0.75rem;
+  }
 }
 
 .post-card time {
@@ -444,10 +494,6 @@ body {
 }
 
 @media (max-width: 768px), (pointer: coarse) {
-  :root {
-    --scale: 2;
-  }
-
   .scroll-scene {
     height: 150dvh;
     height: 150vh;

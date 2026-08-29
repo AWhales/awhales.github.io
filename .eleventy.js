@@ -9,6 +9,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "site/index.html": "index.html" });
   eleventyConfig.addPassthroughCopy({ "site/contact.html": "contact.html" });
   eleventyConfig.addPassthroughCopy({ "site/.nojekyll": ".nojekyll" });
+  eleventyConfig.addPassthroughCopy({ CNAME: "CNAME" });
 
   eleventyConfig.addFilter("readableDate", (dateObj) =>
     dateObj.toLocaleDateString("en-GB", {
@@ -21,6 +22,17 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("htmlDateString", (dateObj) =>
     dateObj.toISOString().slice(0, 10)
   );
+
+  eleventyConfig.addFilter("firstImage", (html) => {
+    if (!html) return "";
+    const match = String(html).match(/<img[^>]+src="([^"]+)"/i);
+    return match ? match[1] : "";
+  });
+
+  eleventyConfig.addFilter("stillSrc", (src) => {
+    if (!src) return src;
+    return String(src).replace(/\.gif$/i, "-still.png");
+  });
 
   eleventyConfig.addCollection("posts", (collection) =>
     collection
