@@ -21,7 +21,7 @@ permalink: notes.html
     </nav>
   </header>
 
-  <main class="page-main">
+  <main class="page-main page-main--notes">
     <h1>Notes</h1>
     <p class="page-intro">Occasional writing about the game — process, pictures, things that went wrong.</p>
 
@@ -35,7 +35,7 @@ permalink: notes.html
           {%- endif %}
           <time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate }}</time>
           <span class="post-card-title">{{ post.data.title }}</span>
-          <span class="post-card-tease">{{ post.data.tease }}</span>
+          <span class="post-card-tease">{{ post.templateContent | firstParagraph }}</span>
         </a>
       </li>
       {%- endfor -%}

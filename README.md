@@ -6,7 +6,6 @@ Public site builds from `site/` + `posts/` → `production/` → GitHub Pages.
 1. **Copy** `posts/_TEMPLATE.md` → `posts/my-cool-thing.md`
 2. **Edit the top block** (between the `---` lines):
    - `title` — headline on the page
-   - `tease` — one line on the Notes list
    - `date` — e.g. `2026-08-26`
    - `preview` — optional still on the Notes list (a `.gif` uses `name-still.png`)
    - `permalink` — must match filename: `notes/my-cool-thing.html`
