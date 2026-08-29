@@ -3,7 +3,6 @@ title: Shaders are hard
 date: 2026-08-26
 preview: /assets/notes/grass.webm
 layout: layouts/post.njk
-permalink: notes/shaders-are-hard.html
 ---
 
 This past week I've been looking at replacing some of my sprite work in game with shaders. I want this game to look great, even at the 160×135 resolution it operates at, and up to this point every single asset has been hand drawn by me.

@@ -3,7 +3,6 @@ title: Items as moves
 date: 2026-08-29
 wip: true
 layout: layouts/post.njk
-permalink: notes/items-as-moves.html
 ---
 
 So I've been wondering for a while how I was going to handle player progression in terms of combat. I didn't want to implement traditional XP levelling, skill trees etcetera, but couldn't think of any ways around giving players a sense of growth and that feeling that your power has increased.

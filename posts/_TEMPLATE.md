@@ -1,9 +1,9 @@
 ---
 title: Your title here
 date: 2026-08-26
+# Uncomment while drafting — keeps the post off the live site.
 # wip: true
 layout: layouts/post.njk
-permalink: notes/your-slug-here.html
 ---
 
 Write your post here. Plain text.

@@ -28,7 +28,8 @@ Fonts: **Silkscreen** (pixel labels, nav, headings) · **IBM Plex Sans** (body).
    - `title` — headline on the page
    - `date` — e.g. `2026-08-26`
    - `preview` — optional still on the Notes list (a `.webm` / `.gif` uses `name-still.png`)
-   - `permalink` — must match filename: `notes/my-cool-thing.html`
+   - `wip` — see **Drafts** below
+   The URL comes from the filename: `posts/my-cool-thing.md` → `/notes/my-cool-thing.html`.
 3. **Write below** the second `---`. Normal text. Blank line = new paragraph.
 4. **Pictures:** drop files in `site/assets/notes/`, then in the post:
    ```
@@ -47,6 +48,17 @@ npm run dev
 ```
 
 Then open the URL it prints (usually http://localhost:8080/).
+
+## Drafts
+
+Add `wip: true` to a post's top block and it stays off the live site — no page is
+built and it doesn't appear on Notes. It still shows on `npm run dev`, with a WIP
+badge, so you can read it as it'll look. Delete the line to publish.
+
+Note this only controls the **website**. The markdown file still lives in the repo,
+so it's readable on GitHub either way.
+
+To preview a production build with drafts included: `INCLUDE_WIP=1 npx eleventy`.
 
 **GitHub Pages:** Settings → Pages → Source → **GitHub Actions**
 
