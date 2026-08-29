@@ -25,13 +25,33 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("firstImage", (html) => {
     if (!html) return "";
-    const match = String(html).match(/<img[^>]+src="([^"]+)"/i);
+    const match = String(html).match(
+      /<(?:img|video)[^>]+src="([^"]+)"/i
+    );
     return match ? match[1] : "";
   });
 
   eleventyConfig.addFilter("stillSrc", (src) => {
     if (!src) return src;
-    return String(src).replace(/\.gif$/i, "-still.png");
+    return String(src).replace(/\.(gif|webp|webm|apng)$/i, "-still.png");
+  });
+
+  eleventyConfig.addTransform("webm-as-video", (content, outputPath) => {
+    if (!outputPath || !outputPath.endsWith(".html") || !content) {
+      return content;
+    }
+    return String(content).replace(
+      /<img\b([^>]*?)\bsrc="([^"]+\.webm)"([^>]*)>/gi,
+      (_, pre, src, post) => {
+        const attrs = `${pre} ${post}`;
+        const altMatch = /alt="([^"]*)"/.exec(attrs);
+        const label = altMatch
+          ? altMatch[1].replace(/"/g, "&quot;")
+          : "";
+        const aria = label ? ` aria-label="${label}"` : "";
+        return `<video class="post-video" src="${src}" muted loop playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback"${aria}></video>`;
+      }
+    );
   });
 
   eleventyConfig.addFilter("firstParagraph", (html) => {
@@ -51,7 +71,8 @@ module.exports = function (eleventyConfig) {
 
     const cleaned = String(html)
       .replace(/<figure[\s\S]*?<\/figure>/gi, "")
-      .replace(/<img[^>]*>/gi, "");
+      .replace(/<(?:img|video)\b[^>]*>/gi, "")
+      .replace(/<\/video>/gi, "");
     const paragraphs = [...cleaned.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
       .map((match) => strip(match[1]))
       .filter(Boolean);
