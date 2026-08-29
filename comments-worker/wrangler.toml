@@ -7,7 +7,7 @@ account_id = "f8ab6850ef2cff8c4559f3b548731726"
 ALLOWED_ORIGINS = "https://moonlight-club.net,https://www.moonlight-club.net,https://awhales.github.io,http://localhost:8080,http://127.0.0.1:8080"
 CONTACT_TO = "alexwaiteuk@gmail.com"
 CONTACT_FROM = "Contact Form <onboarding@resend.dev>"
-NEWSLETTER_SEGMENT_ID = ""
+NEWSLETTER_SEGMENT_ID = "0e2e4ee7-dfd7-495a-a027-194efa77db10"
 
 [[d1_databases]]
 binding = "DB"
