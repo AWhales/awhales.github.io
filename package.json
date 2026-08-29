@@ -3,9 +3,12 @@
   "private": true,
   "scripts": {
     "build": "eleventy",
-    "dev": "eleventy --serve"
+    "dev": "eleventy --serve",
+    "comments:dev": "wrangler dev --config comments-worker/wrangler.toml",
+    "comments:deploy": "wrangler deploy --config comments-worker/wrangler.toml"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.0.0"
+    "@11ty/eleventy": "^3.0.0",
+    "wrangler": "^4.34.0"
   }
 }

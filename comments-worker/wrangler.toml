@@ -1,0 +1,12 @@
+name = "moonlight-comments"
+main = "src/index.js"
+compatibility_date = "2026-08-29"
+account_id = "f8ab6850ef2cff8c4559f3b548731726"
+
+[vars]
+ALLOWED_ORIGINS = "https://moonlight-club.net,https://www.moonlight-club.net,https://awhales.github.io,http://localhost:8080,http://127.0.0.1:8080"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "moonlight-comments"
+database_id = "7238e7c9-2e17-40e4-aa42-e325f985f85f"

@@ -22,8 +22,38 @@
     <p class="post-meta"><a class="post-back" href="../notes.html">Notes</a> · {{ date | readableDate }}</p>
     <h1 class="post-title">{{ title }}</h1>
     <div class="post-body">{{ content | safe }}</div>
+
+    <section
+      class="comments"
+      data-comments
+      data-page="{{ page.fileSlug }}"
+      data-api="https://moonlight-comments.alexjameswaite.workers.dev"
+    >
+      <h2 class="comments-title">Comments</h2>
+      <p class="comments-empty" data-comments-empty hidden>No comments yet.</p>
+      <ul class="comment-list" data-comments-list></ul>
+      <form class="comment-form" data-comments-form>
+        <div class="comment-honey" aria-hidden="true">
+          <label>
+            Website
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </label>
+        </div>
+        <label>
+          Name
+          <input type="text" name="name" maxlength="32" required autocomplete="nickname">
+        </label>
+        <label>
+          Comment
+          <textarea name="body" rows="4" maxlength="800" required></textarea>
+        </label>
+        <button type="submit">Post</button>
+        <p class="comments-status" data-comments-status role="status"></p>
+      </form>
+    </section>
   </article>
   <script src="../js/gifuct.js"></script>
   <script src="../js/gif-toggle.js" defer></script>
+  <script src="../js/comments.js" defer></script>
 </body>
 </html>

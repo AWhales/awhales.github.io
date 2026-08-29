@@ -9,6 +9,11 @@ production/
 # Dependencies
 node_modules/
 
+# Cloudflare Worker
+.wrangler/
+.dev.vars
+comments-worker/.wrangler/
+
 # OS / editor noise
 .DS_Store
 Thumbs.db
