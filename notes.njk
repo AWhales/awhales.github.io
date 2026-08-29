@@ -26,8 +26,9 @@ permalink: notes.html
   </header>
 
   <main class="page-main page-main--notes">
-    <h1>Notes</h1>
-    <p class="page-intro">Occasional writing about the game — process, pictures, things that went wrong.</p>
+    <h1 class="page-title-art">
+      <img src="/assets/notes_header.png" alt="Notes" width="50" height="10" draggable="false">
+    </h1>
 
     <ul class="post-list">
       {%- for post in collections.posts -%}
@@ -47,6 +48,9 @@ permalink: notes.html
       </li>
       {%- endfor -%}
     </ul>
+
+    {% set assetBase = "" %}
+    {% include "newsletter.njk" %}
   </main>
   <script src="js/cloud-drag.js" defer></script>
 </body>

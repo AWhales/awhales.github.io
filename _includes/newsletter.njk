@@ -1,0 +1,24 @@
+<section
+  class="newsletter"
+  data-newsletter
+  data-api="https://moonlight-comments.alexjameswaite.workers.dev"
+>
+  <h2 class="newsletter-title">Newsletter</h2>
+  <p class="page-intro">Occasional updates about the game — new notes, releases, that sort of thing.</p>
+
+  <form class="newsletter-form" data-newsletter-form>
+    <div class="comment-honey" aria-hidden="true">
+      <label>
+        Website
+        <input type="text" name="website" tabindex="-1" autocomplete="off">
+      </label>
+    </div>
+    <label class="newsletter-email">
+      Email
+      <input type="email" name="email" maxlength="120" required autocomplete="email" placeholder="you@example.com">
+    </label>
+    <button type="submit">Subscribe</button>
+    <p class="comments-status" data-newsletter-status role="status"></p>
+  </form>
+</section>
+<script src="{{ assetBase }}js/newsletter.js" defer></script>

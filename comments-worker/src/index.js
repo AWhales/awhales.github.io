@@ -3,6 +3,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_MAX = 3;
 const CONTACT_RATE_MAX = 2;
+const NEWSLETTER_RATE_MAX = 3;
 
 let schemaReady = false;
 
@@ -52,6 +53,9 @@ export default {
       }
       if (url.pathname === "/api/contact" && request.method === "POST") {
         return cors(await sendContact(request, env), request, env);
+      }
+      if (url.pathname === "/api/newsletter" && request.method === "POST") {
+        return cors(await subscribeNewsletter(request, env), request, env);
       }
       if (url.pathname === "/admin" && request.method === "GET") {
         return new Response(adminPage(), {
@@ -256,6 +260,68 @@ async function sendContact(request, env) {
   }
 
   return json({ ok: true }, 201);
+}
+
+async function subscribeNewsletter(request, env) {
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return json({ error: "Bad JSON" }, 400);
+  }
+
+  if (payload.website) return json({ ok: true }, 201);
+
+  const email = cleanEmail(payload.email);
+
+  if (!EMAIL_RE.test(email)) return json({ error: "Valid email needed" }, 400);
+  if (!env.RESEND_API_KEY) return json({ error: "Newsletter not configured" }, 503);
+
+  const ip = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || "local";
+  const ipHash = await hashIp(ip.split(",")[0].trim(), env);
+
+  if (!(await bumpRateLimit(env, `newsletter:${ipHash}`, NEWSLETTER_RATE_MAX))) {
+    return json({ error: "Easy — wait a few minutes" }, 429);
+  }
+
+  const body = {
+    email,
+    unsubscribed: false,
+  };
+
+  const segmentId = clean(env.NEWSLETTER_SEGMENT_ID, 64);
+  if (segmentId) {
+    body.segments = [{ id: segmentId }];
+  }
+
+  const res = await fetch("https://api.resend.com/contacts", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (res.ok) {
+    return json({ ok: true }, 201);
+  }
+
+  let message = "Could not subscribe";
+  let already = false;
+  try {
+    const err = await res.json();
+    message = err.message || message;
+    already = /already exists|duplicate|already subscribed/i.test(message);
+  } catch {
+    // ignore
+  }
+
+  if (already) {
+    return json({ ok: true, already: true }, 200);
+  }
+
+  return json({ error: message }, 502);
 }
 
 async function deleteComment(request, env, id) {

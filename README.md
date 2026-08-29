@@ -89,3 +89,16 @@ The contact page posts to the same Cloudflare Worker as comments. Email is sent 
 
 - **Testing:** `CONTACT_FROM` is set to `onboarding@resend.dev`. Resend only delivers these to the email address you signed up with.
 - **Production:** verify your domain in Resend (e.g. `dayoftheplanetofthenight.com`), then update `CONTACT_FROM` in `comments-worker/wrangler.toml` to something like `Contact Form <hello@dayoftheplanetofthenight.com>` and redeploy.
+
+## Newsletter
+
+The newsletter signup adds subscribers to your Resend contact list via `POST /api/newsletter`. It appears on Notes, Contact, and at the bottom of each post.
+
+### One-time setup
+
+1. In the [Resend dashboard](https://resend.com/audiences), create a **Segment** for newsletter subscribers (optional but tidy).
+2. Copy the segment ID into `NEWSLETTER_SEGMENT_ID` in `comments-worker/wrangler.toml` (leave blank to add contacts without a segment).
+3. Make sure your Resend API key has **Contacts** permission.
+4. Redeploy the worker: `npm run comments:deploy`
+
+When you have news to share, send a **Broadcast** from Resend to that segment.

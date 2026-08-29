@@ -56,6 +56,7 @@
     + (var(--subtitle-gap) + var(--subtitle-h)) * var(--title-scale) * 1px
     + 1px
   );
+  --wordmark-scale: 4;
   --font-pixel: "Silkscreen", monospace;
   --font-body: "IBM Plex Sans", system-ui, sans-serif;
 }
@@ -135,6 +136,18 @@ body {
   text-transform: uppercase;
   color: var(--blue);
   margin: 0 0 2rem;
+}
+
+/* Pixel wordmark standing in for the page heading — integer scale keeps it crisp. */
+.page-main h1.page-title-art {
+  margin-bottom: 1.5rem;
+}
+
+.page-title-art img {
+  display: block;
+  width: calc(50px * var(--wordmark-scale));
+  height: calc(10px * var(--wordmark-scale));
+  image-rendering: pixelated;
 }
 
 .page-main h2 {
@@ -989,6 +1002,98 @@ body {
 .comment-form button:disabled {
   opacity: 0.45;
   cursor: wait;
+}
+
+.newsletter {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--deep-blue);
+  max-width: 34rem;
+}
+
+.newsletter-title {
+  font-family: var(--font-pixel);
+  font-size: clamp(0.8rem, 2.2vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin: 0 0 0.75rem;
+}
+
+.newsletter .page-intro {
+  margin: 0 0 1.25rem;
+}
+
+.newsletter-form {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: flex-end;
+}
+
+.newsletter-form .newsletter-email {
+  flex: 1 1 14rem;
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--light-blue);
+}
+
+.newsletter-form .newsletter-email input {
+  display: block;
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.5rem 0.6rem;
+  border: 2px solid var(--deep-blue);
+  background: var(--blacker);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border-radius: 0;
+  transition: border-color 0.15s ease;
+}
+
+.newsletter-form .newsletter-email input::placeholder {
+  color: var(--grey-blue);
+}
+
+.newsletter-form .newsletter-email input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.newsletter-form button {
+  flex: 0 0 auto;
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--light-blue);
+  background: transparent;
+  border: 2px solid var(--deep-blue);
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.newsletter-form button:hover {
+  color: var(--light-orange);
+  border-color: var(--blue);
+}
+
+.newsletter-form button:disabled {
+  opacity: 0.45;
+  cursor: wait;
+}
+
+.newsletter-form .comments-status {
+  flex: 1 1 100%;
+  margin-top: 0;
 }
 
 .comment-honey {
