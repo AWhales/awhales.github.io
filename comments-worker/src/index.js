@@ -1,6 +1,8 @@
 const PAGE_RE = /^[a-z0-9][a-z0-9-]{0,80}$/i;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_MAX = 3;
+const CONTACT_RATE_MAX = 2;
 
 let schemaReady = false;
 
@@ -47,6 +49,9 @@ export default {
       }
       if (url.pathname.startsWith("/api/comments/") && request.method === "DELETE") {
         return cors(await deleteComment(request, env, url.pathname.slice("/api/comments/".length)), request, env);
+      }
+      if (url.pathname === "/api/contact" && request.method === "POST") {
+        return cors(await sendContact(request, env), request, env);
       }
       if (url.pathname === "/admin" && request.method === "GET") {
         return new Response(adminPage(), {
@@ -111,6 +116,38 @@ function clean(value, max) {
     .slice(0, max);
 }
 
+function cleanEmail(value) {
+  return String(value || "")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\s]/g, "")
+    .trim()
+    .slice(0, 120);
+}
+
+async function bumpRateLimit(env, key, max) {
+  const now = Date.now();
+  const rate = await env.DB.prepare("SELECT window_start, count FROM rate_limits WHERE ip_hash = ?")
+    .bind(key)
+    .first();
+
+  if (rate && now - rate.window_start < RATE_WINDOW_MS && rate.count >= max) {
+    return false;
+  }
+
+  if (!rate || now - rate.window_start >= RATE_WINDOW_MS) {
+    await env.DB.prepare(
+      "INSERT OR REPLACE INTO rate_limits (ip_hash, window_start, count) VALUES (?, ?, 1)"
+    )
+      .bind(key, now)
+      .run();
+  } else {
+    await env.DB.prepare("UPDATE rate_limits SET count = count + 1 WHERE ip_hash = ?")
+      .bind(key)
+      .run();
+  }
+
+  return true;
+}
+
 async function listComments(url, env) {
   const page = url.searchParams.get("page") || "";
   if (!PAGE_RE.test(page)) return json({ error: "Bad page" }, 400);
@@ -146,24 +183,8 @@ async function createComment(request, env) {
   const ipHash = await hashIp(ip.split(",")[0].trim(), env);
   const now = Date.now();
 
-  const rate = await env.DB.prepare("SELECT window_start, count FROM rate_limits WHERE ip_hash = ?")
-    .bind(ipHash)
-    .first();
-
-  if (rate && now - rate.window_start < RATE_WINDOW_MS && rate.count >= RATE_MAX) {
+  if (!(await bumpRateLimit(env, ipHash, RATE_MAX))) {
     return json({ error: "Easy — wait a few minutes" }, 429);
-  }
-
-  if (!rate || now - rate.window_start >= RATE_WINDOW_MS) {
-    await env.DB.prepare(
-      "INSERT OR REPLACE INTO rate_limits (ip_hash, window_start, count) VALUES (?, ?, 1)"
-    )
-      .bind(ipHash, now)
-      .run();
-  } else {
-    await env.DB.prepare("UPDATE rate_limits SET count = count + 1 WHERE ip_hash = ?")
-      .bind(ipHash)
-      .run();
   }
 
   const comment = {
@@ -180,6 +201,61 @@ async function createComment(request, env) {
     .run();
 
   return json({ comment }, 201);
+}
+
+async function sendContact(request, env) {
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return json({ error: "Bad JSON" }, 400);
+  }
+
+  if (payload.website) return json({ ok: true }, 201);
+
+  const name = clean(payload.name, 64);
+  const email = cleanEmail(payload.email);
+  const body = clean(payload.body, 2000);
+
+  if (name.length < 1) return json({ error: "Name needed" }, 400);
+  if (!EMAIL_RE.test(email)) return json({ error: "Valid email needed" }, 400);
+  if (body.length < 1) return json({ error: "Write something" }, 400);
+  if (!env.RESEND_API_KEY) return json({ error: "Contact form not configured" }, 503);
+
+  const ip = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || "local";
+  const ipHash = await hashIp(ip.split(",")[0].trim(), env);
+
+  if (!(await bumpRateLimit(env, `contact:${ipHash}`, CONTACT_RATE_MAX))) {
+    return json({ error: "Easy — wait a few minutes" }, 429);
+  }
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: env.CONTACT_FROM || "Contact Form <onboarding@resend.dev>",
+      to: [env.CONTACT_TO || "alexwaiteuk@gmail.com"],
+      reply_to: email,
+      subject: `Contact: ${name}`,
+      text: `From: ${name} <${email}>\n\n${body}`,
+    }),
+  });
+
+  if (!res.ok) {
+    let message = "Could not send";
+    try {
+      const err = await res.json();
+      message = err.message || message;
+    } catch {
+      // ignore
+    }
+    return json({ error: message }, 502);
+  }
+
+  return json({ ok: true }, 201);
 }
 
 async function deleteComment(request, env, id) {

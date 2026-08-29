@@ -821,6 +821,14 @@ body {
   line-height: 1.5;
 }
 
+.comments-status {
+  margin-top: 0.75rem;
+}
+
+.comments-status[data-kind="ok"] {
+  color: var(--light-orange);
+}
+
 .comments-empty {
   margin-bottom: 1.5rem;
 }
@@ -936,10 +944,6 @@ body {
 .comment-form button:disabled {
   opacity: 0.45;
   cursor: wait;
-}
-
-.comments-status {
-  margin-top: 0.75rem;
 }
 
 .comment-honey {

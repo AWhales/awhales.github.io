@@ -21,7 +21,37 @@
   <main class="page-main">
     <h1>Contact</h1>
 
-    <p class="placeholder">alex@dayoftheplanetofthenight.com</p>
+    <section
+      class="contact"
+      data-contact
+      data-api="https://moonlight-comments.alexjameswaite.workers.dev"
+    >
+      <p class="page-intro">Send a message — it lands in my inbox.</p>
+
+      <form class="comment-form" data-contact-form>
+        <div class="comment-honey" aria-hidden="true">
+          <label>
+            Website
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </label>
+        </div>
+        <label>
+          Name
+          <input type="text" name="name" maxlength="64" required autocomplete="name" placeholder="Your name">
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" maxlength="120" required autocomplete="email" placeholder="you@example.com">
+        </label>
+        <label>
+          Message
+          <textarea name="body" rows="5" maxlength="2000" required placeholder="What's on your mind?"></textarea>
+        </label>
+        <button type="submit">Send</button>
+        <p class="comments-status" data-contact-status role="status"></p>
+      </form>
+    </section>
   </main>
+  <script src="js/contact.js" defer></script>
 </body>
 </html>

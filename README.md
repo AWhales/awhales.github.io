@@ -49,3 +49,31 @@ npm run dev
 Then open the URL it prints (usually http://localhost:8080/).
 
 **GitHub Pages:** Settings → Pages → Source → **GitHub Actions**
+
+## Contact form (Resend)
+
+The contact page posts to the same Cloudflare Worker as comments. Email is sent via [Resend](https://resend.com).
+
+### One-time setup
+
+1. **Create a free Resend account** at [resend.com](https://resend.com) (sign up with `alexwaiteuk@gmail.com` if you want to test quickly).
+2. **Create an API key** — Resend dashboard → API Keys → Create.
+3. **Add the secret to the worker:**
+   ```
+   wrangler secret put RESEND_API_KEY --config comments-worker/wrangler.toml
+   ```
+   Paste the key when prompted (`re_…`).
+4. **Local dev** — add the same key to `comments-worker/.dev.vars`:
+   ```
+   RESEND_API_KEY=re_xxxxxxxx
+   ADMIN_SECRET=local-dev-secret
+   ```
+5. **Deploy the worker:**
+   ```
+   npm run comments:deploy
+   ```
+
+### Testing vs production
+
+- **Testing:** `CONTACT_FROM` is set to `onboarding@resend.dev`. Resend only delivers these to the email address you signed up with.
+- **Production:** verify your domain in Resend (e.g. `dayoftheplanetofthenight.com`), then update `CONTACT_FROM` in `comments-worker/wrangler.toml` to something like `Contact Form <hello@dayoftheplanetofthenight.com>` and redeploy.
