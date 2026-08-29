@@ -4,6 +4,7 @@
 
   const tracks = [...sky.querySelectorAll(".cloud-track")];
   const layers = [...sky.querySelectorAll(".cloud-layer")];
+  const scaler = sky.querySelector(".cloud-scaler");
   if (!tracks.length || !layers.length) return;
 
   const CLOUD_W = 386;
@@ -80,37 +81,26 @@
     } catch {}
   };
 
-  // The clouds are sized up in real pixels, so the offset is tracked in source
-  // pixels and multiplied out only when it is painted. Cached to keep the
-  // per-frame paint from forcing a layout.
-  let cachedScale = null;
-
   const getScale = () => {
-    if (cachedScale) return cachedScale;
-    const sample = tracks[0].querySelector("img");
-    if (sample) {
-      const scale = sample.getBoundingClientRect().width / CLOUD_W;
-      if (Number.isFinite(scale) && scale > 0) {
-        cachedScale = scale;
-        return scale;
+    if (scaler) {
+      const transform = getComputedStyle(scaler).transform;
+      if (transform && transform !== "none") {
+        const scale = new DOMMatrix(transform).a;
+        if (Number.isFinite(scale) && scale > 0) return scale;
       }
     }
-    return 1;
-  };
 
-  const invalidateScale = () => {
-    cachedScale = null;
+    const raw = getComputedStyle(document.documentElement)
+      .getPropertyValue("--title-scale")
+      .trim();
+    const scale = Number.parseFloat(raw);
+    return Number.isFinite(scale) && scale > 0 ? scale : 1;
   };
-
-  window.addEventListener("resize", invalidateScale);
-  for (const img of sky.querySelectorAll(".cloud-track img")) {
-    if (!img.complete) img.addEventListener("load", invalidateScale, { once: true });
-  }
 
   const paint = () => {
-    const x = wrapTransform(trackOffset) * getScale();
+    const x = wrapTransform(trackOffset);
     for (const track of tracks) {
-      track.style.transform = `translate3d(${Math.round(x)}px, 0, 0)`;
+      track.style.transform = `translate3d(${x}px, 0, 0)`;
     }
     for (const layer of layers) {
       layer.style.setProperty("--cloud-drag-x", "0px");
