@@ -86,7 +86,8 @@ body {
   z-index: 10;
   padding: 0.85rem 1.25rem;
   padding-top: max(0.85rem, env(safe-area-inset-top));
-  background: transparent;
+  /* Solid bar so the nav stays legible where clouds drift behind it. */
+  background: var(--black);
   pointer-events: none;
 }
 
