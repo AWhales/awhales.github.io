@@ -259,12 +259,7 @@ body {
 }
 
 .cloud-layer--offset .cloud-scaler {
-  margin-left: calc(var(--cloud-w) * -0.5px);
-}
-
-.cloud-scaler {
-  transform: scale(var(--title-scale));
-  transform-origin: center center;
+  margin-left: calc(var(--cloud-w) * var(--title-scale) * -0.5px);
 }
 
 .cloud-track {
@@ -273,11 +268,16 @@ body {
   animation: cloud-scroll 56s linear infinite;
 }
 
+/*
+ * Sized up in real pixels rather than transform: scale() — Safari rasterises a
+ * transformed layer at its layout size and smooths it when compositing, which
+ * throws away image-rendering and blurs the pixel art.
+ */
 .cloud-track img {
   display: block;
   flex: none;
-  width: calc(var(--cloud-w) * 1px);
-  height: calc(var(--cloud-h) * 1px);
+  width: calc(var(--cloud-w) * var(--title-scale) * 1px);
+  height: calc(var(--cloud-h) * var(--title-scale) * 1px);
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -310,9 +310,20 @@ body {
 .splash-house,
 .splash-bed {
   display: block;
+  object-fit: fill;
+  background: transparent;
+  pointer-events: none;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   transition: transform 0.32s cubic-bezier(0.34, 1.1, 0.64, 1);
+}
+
+.splash-house::-webkit-media-controls,
+.splash-bed::-webkit-media-controls,
+.splash-house::-webkit-media-controls-start-playback-panel,
+.splash-bed::-webkit-media-controls-start-playback-panel {
+  display: none !important;
+  -webkit-appearance: none;
 }
 
 .splash-house {
@@ -821,7 +832,7 @@ body {
   }
 
   to {
-    transform: translate3d(calc(var(--cloud-w) * -1px), 0, 0);
+    transform: translate3d(calc(var(--cloud-w) * var(--title-scale) * -1px), 0, 0);
   }
 }
 

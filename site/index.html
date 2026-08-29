@@ -43,24 +43,40 @@
 
     <div class="splash-props" aria-hidden="true">
       <div class="splash-prop splash-prop--house">
-        <img
+        <video
           class="splash-house"
-          src="assets/house-6.webp"
-          alt=""
           width="96"
           height="128"
-          draggable="false"
+          muted
+          loop
+          autoplay
+          playsinline
+          webkit-playsinline
+          disablepictureinpicture
+          controlslist="nodownload nofullscreen noremoteplayback"
+          preload="auto"
         >
+          <source src="assets/house-6.mov" type='video/mp4; codecs="hvc1"'>
+          <source src="assets/house-6.webm" type="video/webm">
+        </video>
       </div>
       <div class="splash-prop splash-prop--bed">
-        <img
+        <video
           class="splash-bed"
-          src="assets/bed-6.webp"
-          alt=""
           width="32"
           height="48"
-          draggable="false"
+          muted
+          loop
+          autoplay
+          playsinline
+          webkit-playsinline
+          disablepictureinpicture
+          controlslist="nodownload nofullscreen noremoteplayback"
+          preload="auto"
         >
+          <source src="assets/bed-6.mov" type='video/mp4; codecs="hvc1"'>
+          <source src="assets/bed-6.webm" type="video/webm">
+        </video>
       </div>
     </div>
 
@@ -94,5 +110,6 @@
     </a>
   </main>
   <script src="js/cloud-drag.js" defer></script>
+  <script src="js/splash-video.js" defer></script>
 </body>
 </html>
