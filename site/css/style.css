@@ -622,6 +622,19 @@ body {
   margin-bottom: 0.45rem;
 }
 
+.post-badge {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.08em 0.4em 0.02em;
+  font-family: var(--font-pixel);
+  font-size: 0.55em;
+  letter-spacing: 0.06em;
+  vertical-align: 0.2em;
+  color: var(--black);
+  background: var(--orange);
+  border: 2px solid var(--orange);
+}
+
 .post-card-tease {
   display: -webkit-box;
   -webkit-box-orient: vertical;

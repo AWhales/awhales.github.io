@@ -34,7 +34,10 @@ permalink: notes.html
           <img class="post-card-preview" src="{{ preview | stillSrc }}" alt="">
           {%- endif %}
           <time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate }}</time>
-          <span class="post-card-title">{{ post.data.title }}</span>
+          <span class="post-card-title">
+            {{ post.data.title }}
+            {%- if post.data.wip %} <span class="post-badge">WIP</span>{%- endif %}
+          </span>
           <span class="post-card-tease">{{ post.templateContent | firstParagraph }}</span>
         </a>
       </li>

@@ -1,6 +1,7 @@
 ---
 title: Your title here
 date: 2026-08-26
+# wip: true
 layout: layouts/post.njk
 permalink: notes/your-slug-here.html
 ---
