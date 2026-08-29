@@ -10,6 +10,10 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
 </head>
 <body class="page">
+  <div class="page-sky">
+    {% include "sky.njk" %}
+  </div>
+
   <header class="topbar">
     <nav aria-label="Site">
       <a href="../index.html">Home</a>
@@ -55,6 +59,7 @@
       </form>
     </section>
   </article>
+  <script src="../js/cloud-drag.js" defer></script>
   <script src="../js/media-toggle.js" defer></script>
   <script src="../js/comments.js" defer></script>
 </body>

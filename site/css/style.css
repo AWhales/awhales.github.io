@@ -199,6 +199,38 @@ body {
   pointer-events: none;
 }
 
+/*
+ * Content pages reuse the splash sky so the clouds stay in the same viewport
+ * position, at the same drift, once the title is gone. Held back far enough
+ * to keep body text readable.
+ */
+.page-sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+/* The splash lets you grab the clouds; here they must not eat clicks on content. */
+.page-sky .cloud-layer {
+  pointer-events: none;
+  cursor: default;
+}
+
+.page-main,
+.page-main.post {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-sky {
+    opacity: 0.1;
+  }
+}
+
 .sky.is-cloud-dragging .cloud-layer {
   cursor: grabbing;
 }
@@ -903,7 +935,7 @@ body {
   margin-top: 0.35rem;
   padding: 0.5rem 0.6rem;
   border: 2px solid var(--deep-blue);
-  background: transparent;
+  background: var(--blacker);
   color: var(--white);
   font-family: var(--font-body);
   font-size: 0.95rem;

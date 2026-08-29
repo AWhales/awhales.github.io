@@ -1,5 +1,5 @@
 (() => {
-  const sky = document.querySelector(".splash .sky");
+  const sky = document.querySelector(".sky");
   if (!sky) return;
 
   const tracks = [...sky.querySelectorAll(".cloud-track")];
@@ -12,8 +12,12 @@
   const THROW_SCALE = 0.9;
   const TAPER_BASE = 1.3;
   const TAPER_SPEED = 0.02;
+  const STORAGE_KEY = "moonlight.clouds";
+  const SAVE_INTERVAL = 250;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const baseSpeed = reducedMotion ? 0 : -CLOUD_W / SCROLL_DURATION;
+  // Only the splash lets you throw the clouds around; elsewhere they just drift.
+  const draggable = !sky.closest(".page-sky");
 
   let trackOffset = 0;
   let throwVel = 0;
@@ -26,26 +30,11 @@
   let lastMoveTime = 0;
   let velocity = 0;
   let lastFrame = 0;
+  let lastSave = 0;
 
   for (const track of tracks) {
     track.style.animation = "none";
   }
-
-  const getScale = () => {
-    if (scaler) {
-      const transform = getComputedStyle(scaler).transform;
-      if (transform && transform !== "none") {
-        const scale = new DOMMatrix(transform).a;
-        if (Number.isFinite(scale) && scale > 0) return scale;
-      }
-    }
-
-    const raw = getComputedStyle(document.documentElement)
-      .getPropertyValue("--title-scale")
-      .trim();
-    const scale = Number.parseFloat(raw);
-    return Number.isFinite(scale) && scale > 0 ? scale : 1;
-  };
 
   const wrapTransform = (value) => {
     let wrapped = value % CLOUD_W;
@@ -62,6 +51,50 @@
       trackOffset -= CLOUD_W;
       dragStartTrackOffset -= CLOUD_W;
     }
+  };
+
+  /*
+   * The clouds are meant to read as one continuous sky across the whole site,
+   * so each page picks the strip up where the last one left off, advanced by
+   * however long the navigation took.
+   */
+  const restore = () => {
+    let saved;
+    try {
+      saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY));
+    } catch {
+      return;
+    }
+    if (!saved || !Number.isFinite(saved.x) || !Number.isFinite(saved.t)) return;
+
+    const elapsed = Math.max(0, (Date.now() - saved.t) / 1000);
+    trackOffset = saved.x + baseSpeed * elapsed;
+    renormalizeDrag();
+  };
+
+  const save = () => {
+    try {
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ x: trackOffset, t: Date.now() })
+      );
+    } catch {}
+  };
+
+  const getScale = () => {
+    if (scaler) {
+      const transform = getComputedStyle(scaler).transform;
+      if (transform && transform !== "none") {
+        const scale = new DOMMatrix(transform).a;
+        if (Number.isFinite(scale) && scale > 0) return scale;
+      }
+    }
+
+    const raw = getComputedStyle(document.documentElement)
+      .getPropertyValue("--title-scale")
+      .trim();
+    const scale = Number.parseFloat(raw);
+    return Number.isFinite(scale) && scale > 0 ? scale : 1;
   };
 
   const paint = () => {
@@ -91,6 +124,12 @@
     }
 
     paint();
+
+    if (now - lastSave > SAVE_INTERVAL) {
+      lastSave = now;
+      save();
+    }
+
     requestAnimationFrame(tick);
   };
 
@@ -142,12 +181,21 @@
     paint();
   };
 
-  for (const layer of layers) {
-    layer.addEventListener("pointerdown", onPointerDown);
-    layer.addEventListener("pointermove", onPointerMove);
-    layer.addEventListener("pointerup", finishDrag);
-    layer.addEventListener("pointercancel", finishDrag);
+  if (draggable) {
+    for (const layer of layers) {
+      layer.addEventListener("pointerdown", onPointerDown);
+      layer.addEventListener("pointermove", onPointerMove);
+      layer.addEventListener("pointerup", finishDrag);
+      layer.addEventListener("pointercancel", finishDrag);
+    }
   }
 
+  window.addEventListener("pagehide", save);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") save();
+  });
+
+  restore();
+  paint();
   requestAnimationFrame(tick);
 })();
