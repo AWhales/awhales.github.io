@@ -51,9 +51,10 @@ Then open the URL it prints (usually http://localhost:8080/).
 
 ## Drafts
 
-Add `wip: true` to a post's top block and it stays off the live site — no page is
-built and it doesn't appear on Notes. It still shows on `npm run dev`, with a WIP
-badge, so you can read it as it'll look. Delete the line to publish.
+Add `wip: true` to a post's top block and it won't appear on the live Notes list,
+but the page is still built — you can open it at `/notes/your-post.html` or share
+that URL. On `npm run dev` it also shows on Notes with a WIP badge. Delete the
+line to publish.
 
 Note this only controls the **website**. The markdown file still lives in the repo,
 so it's readable on GitHub either way.

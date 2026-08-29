@@ -15,6 +15,8 @@ I think I've found a good design pattern that solves most of those problems.
 
 I've been playing a lot of the climbing game Peak in the last year (great game), and every item you find in the map gives you a unique ability with a relatively simple interface, allowing you to solve the puzzle of climbing the mountain in a number of different and hilarious ways. I'd previously considered my equipped items as static buffs and abilities that could affect combat, but what if you had four slots for holding items, and the items themselves bestowed the player with the four moves that they take into combat.
 
+![Keepsakes menu showing an Amethyst Necklace and its move, Clarity](/assets/notes/keepsakes.png)
+
 This pattern solves both the interfacing issue, the need for fluidity and gives the player the ability to test out new and novel moves in low stakes combat situations, and turns the issue of combat minigame confusion into a process of discovery. Plus the added bonus of encouraging the players to explore the overworld for new and unusual items that could provide powerful or hilarious results.
 
 Also play peak with your friends it's great.

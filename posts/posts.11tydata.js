@@ -1,16 +1,15 @@
 /*
- * Posts marked `wip: true` are still real files in the repo, but they must not
- * reach the deployed site — no page, no entry on Notes. They stay visible on
- * `npm run dev` so drafts can be previewed locally.
+ * Posts marked `wip: true` are hidden from the Notes list on the live site, but
+ * their page is still built so you can share a direct URL. They show on the
+ * Notes list in `npm run dev` (with a WIP badge) for local preview.
  */
-const includeWip =
+const includeWipInList =
   process.env.ELEVENTY_RUN_MODE !== "build" || process.env.INCLUDE_WIP === "1";
 
 module.exports = {
   eleventyComputed: {
     eleventyExcludeFromCollections: (data) =>
-      data.wip && !includeWip ? true : data.eleventyExcludeFromCollections,
-    permalink: (data) =>
-      data.wip && !includeWip ? false : `notes/${data.page.fileSlug}.html`,
+      data.wip && !includeWipInList ? true : data.eleventyExcludeFromCollections,
+    permalink: (data) => `notes/${data.page.fileSlug}.html`,
   },
 };
