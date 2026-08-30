@@ -654,9 +654,9 @@ body {
 
   .post-card-preview {
     grid-row: auto;
-    max-height: 14rem;
-    width: auto;
+    width: 100%;
     max-width: 100%;
+    height: auto;
     margin-bottom: 0.85rem;
   }
 
