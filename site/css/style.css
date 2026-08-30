@@ -135,7 +135,8 @@ body {
  * #232323 while clouds stay visible in the margins.
  */
 .page-main--notes::before,
-.page-main--contact::before {
+.page-main--contact::before,
+.page-main.post::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -768,6 +769,45 @@ body {
   image-rendering: crisp-edges;
   border: 2px solid var(--deep-blue);
   background: var(--blacker);
+}
+
+.post-body img.post-wrap,
+.post-body video.post-wrap,
+.post-body .post-gif.post-wrap {
+  float: right;
+  width: 50%;
+  max-width: 50%;
+  margin: 0.2rem 0 0.85rem 1.25rem;
+}
+
+.post-body .post-gif.post-wrap video {
+  float: none;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border: 0;
+}
+
+.post-body p:has(.post-wrap)::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.post-body .post-gif.post-wrap .post-gif-play-icon {
+  width: 3rem;
+  height: 3rem;
+}
+
+@media (max-width: 520px) {
+  .post-body img.post-wrap,
+  .post-body video.post-wrap,
+  .post-body .post-gif.post-wrap {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin: 1.25rem 0;
+  }
 }
 
 .post-gif {

@@ -19,6 +19,10 @@
 
     video.replaceWith(button);
     button.append(video, play);
+    if (video.classList.contains("post-wrap")) {
+      button.classList.add("post-wrap");
+      video.classList.remove("post-wrap");
+    }
 
     video.muted = true;
     video.loop = true;

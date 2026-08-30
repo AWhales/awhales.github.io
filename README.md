@@ -35,7 +35,9 @@ Fonts: **Silkscreen** (pixel labels, nav, headings) · **IBM Plex Sans** (body).
    ```
    ![caption](/assets/notes/pic.png)
    ![looping clip](/assets/notes/clip.webm)
+   ![half-size, text wraps around it](/assets/notes/clip.webm "wrap")
    ```
+   Add `"wrap"` after the path to float the picture at half width beside the paragraph above it.
 5. **Push** — GitHub builds and deploys automatically.
 
 That's it. You never touch `production/`, HTML, or Eleventy config.

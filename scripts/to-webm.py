@@ -76,6 +76,10 @@ def write_still_from_video(src: Path, dest: Path) -> None:
             str(dest),
         ]
     )
+    # ffmpeg tags the PNG with the video's BT.709 gamma, which colour-managed
+    # viewers then apply, showing the still darker than the clip. Rewrite it
+    # without those chunks.
+    Image.open(dest).convert("RGB").save(dest)
 
 
 def encode_capture(src: Path, dest: Path, fps: int | float | None) -> None:

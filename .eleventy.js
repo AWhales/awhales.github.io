@@ -36,6 +36,19 @@ module.exports = function (eleventyConfig) {
     return String(src).replace(/\.(gif|webp|webm|apng)$/i, "-still.png");
   });
 
+  const addClass = (tag, className) => {
+    if (/\bclass="/i.test(tag)) {
+      return tag.replace(/\bclass="([^"]*)"/i, (_, existing) => {
+        const names = existing.trim().split(/\s+/).filter(Boolean);
+        if (!names.includes(className)) names.push(className);
+        return `class="${names.join(" ")}"`;
+      });
+    }
+    return tag.replace(/^<(\w+)/, `<$1 class="${className}"`);
+  };
+
+  const stripWrapTitle = (tag) => tag.replace(/\s*\btitle="wrap"/i, "");
+
   eleventyConfig.addTransform("webm-as-video", (content, outputPath) => {
     if (!outputPath || !outputPath.endsWith(".html") || !content) {
       return content;
@@ -49,8 +62,38 @@ module.exports = function (eleventyConfig) {
           ? altMatch[1].replace(/"/g, "&quot;")
           : "";
         const aria = label ? ` aria-label="${label}"` : "";
-        return `<video class="post-video" src="${src}" muted loop playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback"${aria}></video>`;
+        const wrap = /\btitle="wrap"/i.test(attrs) ? ` title="wrap"` : "";
+        return `<video class="post-video" src="${src}" muted loop playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback"${aria}${wrap}></video>`;
       }
+    );
+  });
+
+  // `![caption](/path "wrap")` — half-width, text of the previous paragraph wraps around it.
+  eleventyConfig.addTransform("wrap-media", (content, outputPath) => {
+    if (!outputPath || !outputPath.endsWith(".html") || !content) {
+      return content;
+    }
+
+    const markWrap = (html) =>
+      String(html).replace(/<(?:img|video)\b[^>]*\btitle="wrap"[^>]*>/gi, (tag) =>
+        addClass(stripWrapTitle(tag), "post-wrap")
+      );
+
+    const wrapMedia =
+      /<(?:img|video)\b[^>]*\bclass="[^"]*\bpost-wrap\b[^"]*"[^>]*(?:\/>|>\s*<\/video>)/i;
+
+    const hoistWrap = (html) =>
+      html.replace(
+        /(<p\b[^>]*>(?:(?!<\/p>)[\s\S])*<\/p>)\s*<p\b[^>]*>\s*(<(?:img|video)\b[^>]*>\s*(?:<\/video>)?)\s*<\/p>/gi,
+        (match, prev, media) => {
+          if (!wrapMedia.test(media)) return match;
+          return prev.replace(/^(<p\b[^>]*>)/i, `$1${media}`);
+        }
+      );
+
+    return markWrap(String(content)).replace(
+      /(<div class="post-body">)([\s\S]*?)(<\/div>)/,
+      (_, open, body, close) => open + hoistWrap(body) + close
     );
   });
 
