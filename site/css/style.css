@@ -124,8 +124,23 @@ body {
 }
 
 .page-main--notes,
+.page-main--contact,
 .page-main.post {
   max-width: 54rem;
+  min-height: 100vh;
+}
+
+/*
+ * Solid reading column — blocks the faint page-sky so content sits on flat
+ * #232323 while clouds stay visible in the margins.
+ */
+.page-main--notes::before,
+.page-main--contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--black);
+  z-index: -1;
 }
 
 .page-main h1 {
@@ -928,7 +943,6 @@ body {
   position: relative;
   display: grid;
   gap: 1.15rem;
-  max-width: 34rem;
 }
 
 .comment-form label {
@@ -942,19 +956,21 @@ body {
 }
 
 .comment-form input,
-.comment-form textarea {
+.comment-form textarea,
+.newsletter-form .newsletter-email input {
   display: block;
   width: 100%;
   margin-top: 0.35rem;
-  padding: 0.5rem 0.6rem;
+  padding: 0.65rem 0.75rem;
   border: 2px solid var(--deep-blue);
-  background: var(--blacker);
+  background: var(--grey-blue);
   color: var(--white);
   font-family: var(--font-body);
   font-size: 0.95rem;
   line-height: 1.5;
   border-radius: 0;
-  transition: border-color 0.15s ease;
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.18);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .comment-form > label:first-of-type input {
@@ -962,20 +978,24 @@ body {
 }
 
 .comment-form textarea {
-  min-height: 4.5rem;
+  min-height: 5.5rem;
   max-height: 14rem;
   resize: vertical;
 }
 
 .comment-form input::placeholder,
-.comment-form textarea::placeholder {
-  color: var(--grey-blue);
+.comment-form textarea::placeholder,
+.newsletter-form .newsletter-email input::placeholder {
+  color: var(--light-blue);
+  opacity: 0.85;
 }
 
 .comment-form input:focus,
-.comment-form textarea:focus {
+.comment-form textarea:focus,
+.newsletter-form .newsletter-email input:focus {
   outline: none;
   border-color: var(--blue);
+  background: var(--grey-blue);
 }
 
 .comment-form button {
@@ -1008,7 +1028,6 @@ body {
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 2px solid var(--deep-blue);
-  max-width: 34rem;
 }
 
 .newsletter-title {
@@ -1041,30 +1060,6 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--light-blue);
-}
-
-.newsletter-form .newsletter-email input {
-  display: block;
-  width: 100%;
-  margin-top: 0.35rem;
-  padding: 0.5rem 0.6rem;
-  border: 2px solid var(--deep-blue);
-  background: var(--blacker);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  border-radius: 0;
-  transition: border-color 0.15s ease;
-}
-
-.newsletter-form .newsletter-email input::placeholder {
-  color: var(--grey-blue);
-}
-
-.newsletter-form .newsletter-email input:focus {
-  outline: none;
-  border-color: var(--blue);
 }
 
 .newsletter-form button {
