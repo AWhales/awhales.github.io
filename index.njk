@@ -1,14 +1,13 @@
+---
+permalink: index.html
+eleventyExcludeFromCollections: true
+---
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>MOONLIGHT★CLUB: Please Microwave Your Head!</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
-</head>
+{%- set pageTitle = site.name + ": " + site.tagline -%}
+{%- set canonical = "/" -%}
+{%- set schema = "website" -%}
+{% include "head.njk" %}
 <body class="splash-page">
   <header class="topbar">
     <nav aria-label="Site">
@@ -19,6 +18,7 @@
   </header>
 
   <main class="splash">
+    <h1 class="sr-only">{{ site.name }}: {{ site.tagline }}</h1>
     <div class="sky" aria-hidden="true">
       <div class="cloud-layer">
         <div class="cloud-scaler">
@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <a class="title-link" href="notes.html" aria-label="MOONLIGHT★CLUB — Notes">
+    <a class="title-link" href="notes.html" aria-label="{{ site.name }} — Notes">
       <span class="title-star-slot">
         <img
           class="title-star"

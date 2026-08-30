@@ -1,0 +1,24 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{{ "/" | absoluteUrl(site.url) }}</loc>
+  </url>
+  <url>
+    <loc>{{ "/notes.html" | absoluteUrl(site.url) }}</loc>
+  </url>
+  <url>
+    <loc>{{ "/contact.html" | absoluteUrl(site.url) }}</loc>
+  </url>
+{%- for post in collections.posts %}
+{%- if not post.data.wip %}
+  <url>
+    <loc>{{ post.url | absoluteUrl(site.url) }}</loc>
+    <lastmod>{{ post.date | htmlDateString }}</lastmod>
+  </url>
+{%- endif %}
+{%- endfor %}
+</urlset>

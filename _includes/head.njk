@@ -1,0 +1,77 @@
+{%- set seoTitle = pageTitle or title or site.name -%}
+{%- set seoDescription = (shareDescription or description or site.description) | seoDescription -%}
+{%- set seoImage = (shareImage or image or site.image) | stillSrc -%}
+{%- set seoPath = canonical or page.url -%}
+{%- set seoUrl = seoPath | absoluteUrl(site.url) -%}
+{%- set seoImageUrl = seoImage | absoluteUrl(site.url) -%}
+{%- set seoType = ogType or "website" -%}
+{%- set seoPrefix = assetPrefix or "" -%}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>{{ seoTitle }}</title>
+  <meta name="description" content="{{ seoDescription }}">
+  {%- if noindex %}
+  <meta name="robots" content="noindex, follow">
+  {%- endif %}
+  <link rel="canonical" href="{{ seoUrl }}">
+  <link rel="icon" href="{{ site.favicon }}" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#232323">
+
+  <meta property="og:type" content="{{ seoType }}">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="{{ seoTitle }}">
+  <meta property="og:description" content="{{ seoDescription }}">
+  <meta property="og:url" content="{{ seoUrl }}">
+  <meta property="og:image" content="{{ seoImageUrl }}">
+  <meta property="og:image:alt" content="{{ imageAlt or site.name }}">
+  {%- if seoImage == site.image and site.imageWidth %}
+  <meta property="og:image:width" content="{{ site.imageWidth }}">
+  <meta property="og:image:height" content="{{ site.imageHeight }}">
+  {%- endif %}
+  {%- if seoType == "article" and published %}
+  <meta property="article:published_time" content="{{ published | isoDate }}">
+  {%- endif %}
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ seoTitle }}">
+  <meta name="twitter:description" content="{{ seoDescription }}">
+  <meta name="twitter:image" content="{{ seoImageUrl }}">
+
+  {%- if schema == "website" %}
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ site.name | dump | safe }},
+  "url": {{ site.url | dump | safe }},
+  "description": {{ site.description | dump | safe }}
+}
+  </script>
+  {%- elif schema == "article" %}
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ title | dump | safe }},
+  "description": {{ seoDescription | dump | safe }},
+  "image": {{ seoImageUrl | dump | safe }},
+  "datePublished": {{ (published | isoDate) | dump | safe }},
+  "url": {{ seoUrl | dump | safe }},
+  "mainEntityOfPage": {{ seoUrl | dump | safe }},
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": {{ site.name | dump | safe }},
+    "url": {{ site.url | dump | safe }}
+  }
+}
+  </script>
+  {%- endif %}
+
+  <link rel="stylesheet" href="{{ seoPrefix }}css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
+</head>

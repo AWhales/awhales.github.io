@@ -1,4 +1,10 @@
 {
   "name": "MOONLIGHT★CLUB",
-  "tagline": "Please Microwave Your Head!"
+  "tagline": "Please Microwave Your Head!",
+  "url": "https://moonlight-club.net",
+  "description": "Dev notes for MOONLIGHT★CLUB, a tiny-resolution game. Please microwave your head.",
+  "image": "/assets/og.png",
+  "imageWidth": 1200,
+  "imageHeight": 630,
+  "favicon": "/assets/star.png"
 }

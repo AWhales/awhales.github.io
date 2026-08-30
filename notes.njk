@@ -3,15 +3,10 @@ permalink: notes.html
 ---
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notes — {{ site.name }}</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
-</head>
+{%- set pageTitle = "Notes — " + site.name -%}
+{%- set description = "Dev notes and updates from making " + site.name + "." -%}
+{%- set canonical = "/notes.html" -%}
+{% include "head.njk" %}
 <body class="page">
   <div class="page-sky">
     {% include "sky.njk" %}

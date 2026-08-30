@@ -6,8 +6,6 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "site/css": "css" });
   eleventyConfig.addPassthroughCopy({ "site/js": "js" });
   eleventyConfig.addPassthroughCopy({ "site/assets": "assets" });
-  eleventyConfig.addPassthroughCopy({ "site/index.html": "index.html" });
-  eleventyConfig.addPassthroughCopy({ "site/contact.html": "contact.html" });
   eleventyConfig.addPassthroughCopy({ "site/.nojekyll": ".nojekyll" });
   eleventyConfig.addPassthroughCopy({ CNAME: "CNAME" });
 
@@ -95,6 +93,31 @@ module.exports = function (eleventyConfig) {
       /(<div class="post-body">)([\s\S]*?)(<\/div>)/,
       (_, open, body, close) => open + hoistWrap(body) + close
     );
+  });
+
+  eleventyConfig.addFilter("absoluteUrl", (path, base) => {
+    const root = String(base || "").replace(/\/$/, "");
+    if (!path) return `${root}/`;
+    const value = String(path);
+    if (/^https?:\/\//i.test(value)) return value;
+    if (value === "/") return `${root}/`;
+    return root + (value.startsWith("/") ? value : `/${value}`);
+  });
+
+  eleventyConfig.addFilter("isoDate", (dateObj) => {
+    if (!dateObj) return "";
+    const date = dateObj instanceof Date ? dateObj : new Date(dateObj);
+    return Number.isNaN(date.getTime()) ? "" : date.toISOString();
+  });
+
+  eleventyConfig.addFilter("seoDescription", (text, max = 160) => {
+    const value = String(text || "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (value.length <= max) return value;
+    const sliced = value.slice(0, max - 1);
+    const cut = sliced.lastIndexOf(" ");
+    return `${cut > 80 ? sliced.slice(0, cut) : sliced}…`;
   });
 
   eleventyConfig.addFilter("firstParagraph", (html) => {

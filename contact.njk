@@ -1,14 +1,13 @@
+---
+permalink: contact.html
+eleventyExcludeFromCollections: true
+---
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact — MOONLIGHT★CLUB</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
-</head>
+{%- set pageTitle = "Contact — " + site.name -%}
+{%- set description = "Send a message or subscribe to occasional updates about " + site.name + "." -%}
+{%- set canonical = "/contact.html" -%}
+{% include "head.njk" %}
 <body class="page">
   <div class="page-sky">
     <div class="sky" aria-hidden="true">

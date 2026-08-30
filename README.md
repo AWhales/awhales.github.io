@@ -27,6 +27,7 @@ Fonts: **Silkscreen** (pixel labels, nav, headings) · **IBM Plex Sans** (body).
 2. **Edit the top block** (between the `---` lines):
    - `title` — headline on the page
    - `date` — e.g. `2026-08-26`
+   - `description` — optional search/share blurb (defaults to the first paragraph)
    - `preview` — optional still on the Notes list (a `.webm` / `.gif` uses `name-still.png`)
    - `wip` — see **Drafts** below
    The URL comes from the filename: `posts/my-cool-thing.md` → `/notes/my-cool-thing.html`.
