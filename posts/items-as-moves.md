@@ -1,7 +1,7 @@
 ---
 title: Items as moves
 date: 2026-08-30
-preview: /assets/notes/combo-minigame.webm
+preview: /assets/notes/woodlouse.webm
 layout: layouts/post.njk
 ---
 
@@ -11,7 +11,7 @@ One of the biggest mental blocks has been trying to solve how the player unlocks
 
 But that design just doesn't work for this game. You play combat as a single character, sometimes accompanied by teammates that you don't control. If a player learned a moveset they didn't enjoy, or wasn't appropriate for the enemy they were battling, being limited to just four moves could be frustrating, so being able to fluidly swap between move-sets is essential.
 
-![Combo minigame for Clarity against a Minor Rabid Rat](/assets/notes/combo-minigame.webm)
+![Combo minigame against a Peculiar Woodlouse](/assets/notes/woodlouse.webm)
 
 There's other little issues too - as the moves are played out as mini-games in the combat field, if every move has a *somewhat* unique interaction, how do the game go about teaching the player the (possibly) many mini-games? How does the player know the move and mini-game they are committing to will be an interaction they enjoy?
 
