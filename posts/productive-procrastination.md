@@ -16,9 +16,9 @@ I've been trying to put a stop to this tooling brand of productive procrastinati
 
 For example, I recently got into the idea of using shaders to replace/enhance some hand drawn pixel art. It worked so well that I started thinking about all the other things I could replace with shaders, and started building things that I have no need for within the vertical slice.
 
-Here was the seed of one idea, that I began doodling in a particularly long meeting, of how to form clouds from shaded circles with blend modes. If they were formed of circles they could be easily controlled to be interactive and dynamic — the player could walk through them and the clouds would simply move around them.
-
 ![Clouds from shaded circles](/assets/notes/cloud-example.png)
+
+Here was the seed of one idea, that I began doodling in a particularly long meeting, of how to form clouds from shaded circles with blend modes. If they were formed of circles they could be easily controlled to be interactive and dynamic — the player could walk through them and the clouds would simply move around them.
 
 I got two full days into building and optimising this before I realised what I was doing — procrastinating again!
 
